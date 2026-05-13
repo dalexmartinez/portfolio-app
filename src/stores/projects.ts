@@ -4,36 +4,44 @@ import { fetchProjects, fetchProjectById } from '@/services/notion'
 import type { Project, ProjectDetail } from '@/types'
 
 export const useProjectsStore = defineStore('projects', () => {
-  // Estado
+  // State
   const projects = ref<Project[]>([])
   const activeFilter = ref('All')
   const isLoading = ref(false)
   const error = ref<string | null>(null)
   const cache = ref<Record<string, ProjectDetail>>({})
 
-  // Acciones
+  // Actions
   async function loadProjects() {
     isLoading.value = true
     error.value = null
-    console.log('loadProjects ejecutando — filter:', activeFilter.value)
+    console.log('loadProjects running — filter:', activeFilter.value)
     try {
       projects.value = await fetchProjects(activeFilter.value)
-      console.log('proyectos recibidos:', projects.value)
+      console.log('projects received:', projects.value)
     } catch (e) {
       console.log('error:', e)
-      error.value = 'Error al cargar proyectos'
+      error.value = 'Failed to load projects'
     } finally {
       isLoading.value = false
     }
   }
 
   async function loadProjectById(id: string) {
+    // Skip if already cached
     if (cache.value[id]) return
     try {
       cache.value[id] = await fetchProjectById(id)
     } catch (e) {
-      error.value = 'Error al cargar el proyecto'
+      error.value = 'Failed to load project'
     }
+  }
+
+  async function loadProjectBySlug(slug: string) {
+    // Find the real Notion ID from already loaded projects
+    const found = projects.value.find(p => p.slug === slug)
+    if (!found) return
+    await loadProjectById(found.id)
   }
 
   function setFilter(category: string) {
@@ -49,6 +57,7 @@ export const useProjectsStore = defineStore('projects', () => {
     cache,
     loadProjects,
     loadProjectById,
+    loadProjectBySlug,
     setFilter
   }
 })

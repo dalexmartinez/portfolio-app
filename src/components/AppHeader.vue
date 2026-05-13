@@ -7,8 +7,8 @@ const { isDark, toggle } = useDarkMode()
 <template>
   <header class="fixed top-0 left-0 right-0 z-50 h-[54px] flex items-center justify-between px-7 border-b border-border bg-background/88 backdrop-blur-sm">
 
-    <div class="font-display font-extrabold text-[15px] tracking-tight text-foreground">
-      Dalex Martínez
+    <div class="font-display font-semibold text-[15px] tracking-tight text-foreground uppercase">
+        dAlex Portfolio App
     </div>
 
     <nav class="flex items-center gap-7">
@@ -35,7 +35,7 @@ const { isDark, toggle } = useDarkMode()
       <!-- Switch dark/light -->
       <button
         @click="toggle"
-        :aria-label="isDark ? 'Activar modo claro' : 'Activar modo oscuro'"
+        :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
         class="flex items-center gap-2 bg-transparent border-none cursor-pointer p-0"
       >
         <span class="relative block w-8 h-[18px] rounded-full bg-muted">

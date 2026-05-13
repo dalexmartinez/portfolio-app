@@ -31,7 +31,7 @@ const skeletonHeights = [180, 130, 210, 150, 220, 160, 140]
     <!-- Masonry grid -->
     <div class="px-7 py-5" style="columns: 3; column-gap: 12px;">
 
-      <!-- Skeletons mientras carga -->
+      <!-- Skeletons while loading -->
       <template v-if="isLoading">
         <SkeletonCard
           v-for="(h, i) in skeletonHeights"
@@ -41,7 +41,7 @@ const skeletonHeights = [180, 130, 210, 150, 220, 160, 140]
         />
       </template>
 
-      <!-- Cards reales -->
+      <!-- Real cards -->
       <template v-else>
         <ProjectCard
           v-for="project in projects"

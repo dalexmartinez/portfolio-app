@@ -28,13 +28,13 @@ function handleMouseEnter() {
         class="w-full h-full object-cover"
       />
       <span v-else class="font-sans text-[10px] text-muted-foreground tracking-wider">
-        sin imagen
+        no image
       </span>
     </div>
 
     <!-- Metadata -->
     <div class="px-3 py-2 border-t border-border bg-background">
-      <div class="font-display font-bold text-[13px] tracking-tight text-foreground mb-[3px]">
+      <div class="font-display font-semibold text-[13px] tracking-tight text-foreground mb-[3px] uppercase">
         {{ project.title }}
       </div>
       <div class="font-sans text-[10px] uppercase tracking-wider text-muted-foreground">
