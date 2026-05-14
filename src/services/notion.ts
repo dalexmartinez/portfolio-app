@@ -36,8 +36,12 @@ export async function fetchProjectById(id: string): Promise<ProjectDetail> {
     year: page.properties.Year?.number ?? 0,
     client: page.properties.Client?.rich_text[0]?.plain_text ?? '',
     description: page.properties.Description?.rich_text[0]?.plain_text ?? '',
-    cover: page.properties.Cover?.url ?? '',
-    images: page.properties.Images?.url ? [page.properties.Images.url] : [],
+    cover: page.properties.Cover?.files[0]?.file?.url
+      ?? page.properties.Cover?.files[0]?.external?.url
+      ?? '',
+    images: page.properties.Images?.files?.map(
+      (f: any) => f?.file?.url ?? f?.external?.url ?? ''
+    ).filter(Boolean) ?? [],
     tags: page.properties.Tags?.multi_select?.map((t: any) => t.name) ?? []
   }
 }
@@ -49,6 +53,8 @@ function transformPage(page: any): Project {
     slug: page.properties.Slug?.rich_text[0]?.plain_text ?? '',
     category: page.properties.Category?.select?.name ?? '',
     year: page.properties.Year?.number ?? 0,
-    cover: page.properties.Cover?.url ?? ''
+    cover: page.properties.Images?.files[0]?.file?.url
+        ?? page.properties.Images?.files[0]?.external?.url
+        ?? ''
   }
 }

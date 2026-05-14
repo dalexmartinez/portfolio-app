@@ -4,13 +4,17 @@ import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useProjectsStore } from '@/stores/projects'
 import { useTransitions } from '@/composables/useTransitions'
-
+import AppLightbox from '@/components/AppLightbox.vue'
 
 const route = useRoute()
 const router = useRouter()
 const store = useProjectsStore()
 const { cache } = storeToRefs(store)
+
 const { zoomIn, zoomOut } = useTransitions()
+
+const lightboxOpen = ref(false)
+const lightboxIndex = ref(0)
 
 const slug = computed(() => route.params.id as string)
 const project = computed(() => {
@@ -36,6 +40,11 @@ function goBack() {
   } else {
     router.push('/')
   }
+}
+
+function openLightbox(index: number) {
+  lightboxIndex.value = index
+  lightboxOpen.value = true
 }
 </script>
 
@@ -77,9 +86,18 @@ function goBack() {
             {{ project.title }}
           </div>
           <!-- Main image -->
-          <div class="w-full h-[280px] bg-muted rounded-lg border border-border flex items-center justify-center cursor-pointer hover:border-foreground/20 transition-colors">
-            <span class="font-sans text-[10px] text-muted-foreground tracking-wider">
-              {{ project.images.length ? '' : 'no images' }}
+          <div
+            @click="openLightbox(0)"
+            class="w-full h-[280px] bg-muted rounded-lg border border-border flex items-center justify-center cursor-pointer hover:border-foreground/20 transition-colors overflow-hidden"
+          >
+            <img
+              v-if="project.images[0]"
+              :src="project.images[0]"
+              :alt="project.title"
+              class="w-full h-full object-cover"
+            />
+            <span v-else class="font-sans text-[10px] text-muted-foreground tracking-wider">
+              no images
             </span>
           </div>
 
@@ -88,11 +106,14 @@ function goBack() {
             <div
               v-for="(img, i) in project.images"
               :key="i"
-              class="flex-1 h-[64px] bg-muted rounded-md border border-border cursor-pointer hover:border-foreground/20 transition-colors"
-            ></div>
+              @click="openLightbox(i)"
+              class="flex-1 h-[64px] bg-muted rounded-md border border-border cursor-pointer hover:border-foreground/20 transition-colors overflow-hidden"
+            >
+              <img :src="img" :alt="`Thumbnail ${i + 1}`" class="w-full h-full object-cover" />
+            </div>
           </div>
         </div>
-
+        
         <!-- Sidebar info -->
         <div class="flex flex-col gap-0 pt-[52px]">
           <div>
@@ -127,6 +148,13 @@ function goBack() {
           </div>
         </div>
 
+        <!-- Lightbox — rendered outside the component tree via Teleport -->
+        <AppLightbox
+          v-if="project"
+          :images="project.images"
+          v-model="lightboxOpen"
+        />
+        
       </div>
     </template>
   </div>

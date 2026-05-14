@@ -3,8 +3,8 @@ export interface Project {
   title: string
   category: string
   year: number
-  cover: string        // URL de la imagen de portada
-  slug: string         // para la URL: /project/magazine-campaign
+  cover: string  // derived from first image in Images array
+  slug: string
 }
 
 export interface ProjectDetail extends Project {
@@ -13,3 +13,4 @@ export interface ProjectDetail extends Project {
   images: string[]     // URLs de todas las imágenes
   tags: string[]
 }
+
