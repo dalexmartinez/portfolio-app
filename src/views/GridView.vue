@@ -1,14 +1,29 @@
 <script setup lang="ts">
+import { watch, nextTick, ref } from 'vue'
 import { useProjects } from '@/composables/useProjects'
 import { useFilter } from '@/composables/useFilter'
+import { useTransitions } from '@/composables/useTransitions'
 import ProjectCard from '@/components/ProjectCard.vue'
 import SkeletonCard from '@/components/SkeletonCard.vue'
 import FilterChip from '@/components/FilterChip.vue'
 
 const { projects, isLoading } = useProjects()
 const { categories, activeFilter, setFilter } = useFilter()
+const { fadeCards } = useTransitions()
 
 const skeletonHeights = [180, 130, 210, 150, 220, 160, 140]
+
+// Reference to card elements for GSAP
+const cardRefs = ref<HTMLElement[]>([])
+
+// Fade cards when projects update
+watch(projects, async () => {
+  cardRefs.value = [] // reset before repopulating
+  await nextTick()
+  if (cardRefs.value.length) {
+    fadeCards(cardRefs.value)
+  }
+})
 </script>
 
 <template>
@@ -48,6 +63,7 @@ const skeletonHeights = [180, 130, 210, 150, 220, 160, 140]
           :key="project.id"
           :project="project"
           class="mb-3 break-inside-avoid"
+          :ref="(el: any) => { if (el?.$el) cardRefs.push(el.$el) }"
         />
       </template>
 

@@ -1,31 +1,46 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useProjectsStore } from '@/stores/projects'
+import { useTransitions } from '@/composables/useTransitions'
+
 
 const route = useRoute()
 const router = useRouter()
 const store = useProjectsStore()
 const { cache } = storeToRefs(store)
-const slug = computed(() => route.params.id as string)
+const { zoomIn, zoomOut } = useTransitions()
 
+const slug = computed(() => route.params.id as string)
 const project = computed(() => {
   const found = store.projects.find(p => p.slug === slug.value)
   return found ? cache.value[found.id] : null
 })
 
+// Reference to the main container for GSAP
+const container = ref<HTMLElement | null>(null)
+
 onMounted(async () => {
   await store.loadProjectBySlug(slug.value)
+  // Wait for Vue to render the data before animating
+  await nextTick()
+  if (container.value) {
+    zoomIn(container.value, () => {})
+  }
 })
 
 function goBack() {
-  router.push('/')
+  if (container.value) {
+    zoomOut(container.value, () => router.push('/'))
+  } else {
+    router.push('/')
+  }
 }
 </script>
 
 <template>
-  <div class="min-h-screen bg-background pt-[54px]">
+  <div class="min-h-screen bg-background pt-[54px]" ref="container">
 
     <!-- Loading -->
     <div v-if="!project" class="flex items-center justify-center h-[80vh]">

@@ -15,13 +15,15 @@ export const useProjectsStore = defineStore('projects', () => {
   async function loadProjects() {
     isLoading.value = true
     error.value = null
-    console.log('loadProjects running — filter:', activeFilter.value)
     try {
       projects.value = await fetchProjects(activeFilter.value)
-      console.log('projects received:', projects.value)
-    } catch (e) {
-      console.log('error:', e)
-      error.value = 'Failed to load projects'
+    } catch (e: any) {
+      // Return empty array if filter option doesn't exist in Notion yet
+      if (e?.code === 'validation_error') {
+        projects.value = []
+      } else {
+        error.value = 'Failed to load projects'
+      }
     } finally {
       isLoading.value = false
     }
