@@ -1,3 +1,103 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useTransitions } from '@/composables/useTransitions'
+
+const container = ref<HTMLElement | null>(null)
+const { zoomIn } = useTransitions()
+
+const CV_URL = 'https://drive.google.com/your-cv-link-here'
+
+const skills = [
+  'Figma', 'Adobe Illustrator', 'Adobe InDesign', 'After Effects',
+  'Photoshop', 'Vue 3', 'React', 'TypeScript',
+  'HTML / CSS', 'GSAP', 'Git', 'Notion'
+]
+
+onMounted(() => {
+  if (container.value) zoomIn(container.value, () => {})
+})
+</script>
+
 <template>
-  <div>About</div>
+  <div ref="container" class="min-h-screen bg-background pt-[54px]">
+
+    <!-- Header -->
+    <div class="px-7 py-12 border-b border-border">
+      <div class="font-display font-semibold text-[11px] uppercase tracking-widest text-muted-foreground mb-3">
+        About
+      </div>
+      <h1 class="font-display font-semibold text-[30px] uppercase tracking-tight leading-none text-foreground">
+        Dalex Martínez
+      </h1>
+    </div>
+
+    <!-- Body -->
+    <div class="grid grid-cols-[1fr_320px] gap-12 px-7 py-10">
+
+      <!-- Left — Bio -->
+      <div class="flex flex-col gap-8">
+
+        <!-- Bio text -->
+        <div class="flex flex-col gap-5">
+          <p class="font-sans font-light text-[14px] text-foreground/70 leading-relaxed">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </p>
+          <p class="font-sans font-light text-[14px] text-foreground/70 leading-relaxed">
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+          </p>
+        </div>
+
+        <!-- Skills -->
+        <div>
+          <div class="font-sans text-[9px] uppercase tracking-[0.12em] text-muted-foreground mb-4">
+            Skills & Tools
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span v-for="skill in skills" :key="skill"
+              class="font-sans text-[10px] uppercase tracking-wider px-3 py-1 rounded-full border border-border text-muted-foreground">
+              {{ skill }}
+            </span>
+          </div>
+        </div>
+
+        <!-- CV Download -->
+        <div>
+          <a
+            :href="CV_URL"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 font-display font-semibold text-[11px] uppercase tracking-widest text-foreground border border-foreground/30 px-5 py-3 rounded-full hover:bg-foreground/5 transition-colors no-underline"
+          >
+            Download CV
+            <span class="text-[10px]">↗</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Right — Photo placeholder -->
+      <div class="flex flex-col gap-4">
+        <div class="w-full aspect-[3/4] bg-muted rounded-lg border border-border flex items-center justify-center">
+          <span class="font-sans text-[10px] text-muted-foreground tracking-wider uppercase">
+            Photo
+          </span>
+        </div>
+        <div class="flex flex-col gap-1">
+          <div class="font-display font-semibold text-[13px] text-foreground">Dalex Martínez</div>
+          <div class="font-sans text-[10px] uppercase tracking-wider text-muted-foreground">
+            Designer & Developer — CDMX
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </template>
+
+<script lang="ts">
+const skills = [
+  'Figma', 'Adobe Illustrator', 'Adobe InDesign', 'After Effects',
+  'Photoshop', 'Vue 3', 'React', 'TypeScript',
+  'HTML / CSS', 'GSAP', 'Git', 'Notion'
+]
+</script>
