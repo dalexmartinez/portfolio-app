@@ -30,15 +30,15 @@ watch(projects, async () => {
   <div class="min-h-screen bg-background pt-[54px]">
 
     <!-- Filter bar -->
-    <div class="sticky top-[54px] z-40 flex items-center gap-2 px-7 py-3 border-b border-border bg-background/88 backdrop-blur-sm">
-      <FilterChip
+    <div class="sticky top-[54px] z-40 flex items-center gap-2 px-7 py-3 border-b border-border bg-background backdrop-blur-sm overflow-x-auto scrollbar-none">
+    <FilterChip
         v-for="cat in categories"
         :key="cat"
         :label="cat"
         :active="activeFilter === cat"
         @select="setFilter"
       />
-      <span class="ml-auto font-sans text-[10px] text-muted-foreground tracking-wider">
+      <span class="ml-auto font-sans text-[10px] text-muted-foreground tracking-wider shrink-0 whitespace-nowrap font-medium">
         {{ projects.length }} projects
       </span>
     </div>
@@ -68,5 +68,6 @@ watch(projects, async () => {
       </template>
 
     </div>
+
   </div>
 </template>

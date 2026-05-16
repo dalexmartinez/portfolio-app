@@ -1,11 +1,10 @@
 <script setup lang="ts">
+import { siteConfig } from '@/config/site'
 import { ref, onMounted } from 'vue'
 import { useTransitions } from '@/composables/useTransitions'
 
 const container = ref<HTMLElement | null>(null)
 const { zoomIn } = useTransitions()
-
-const CV_URL = 'https://drive.google.com/your-cv-link-here'
 
 const skills = [
   'Figma', 'Adobe Illustrator', 'Adobe InDesign', 'After Effects',
@@ -32,10 +31,10 @@ onMounted(() => {
     </div>
 
     <!-- Body -->
-    <div class="grid grid-cols-[1fr_320px] gap-12 px-7 py-10">
+    <div class="grid grid-cols-1 md:grid-cols-[1fr_320px] gap-12 px-7 py-10">
 
       <!-- Left — Bio -->
-      <div class="flex flex-col gap-8">
+      <div class="flex flex-col gap-8 order-last md:order-first">
 
         <!-- Bio text -->
         <div class="flex flex-col gap-5">
@@ -63,7 +62,7 @@ onMounted(() => {
         <!-- CV Download -->
         <div>
           <a
-            :href="CV_URL"
+            :href="siteConfig.cvUrl"
             target="_blank"
             rel="noopener noreferrer"
             class="inline-flex items-center gap-2 font-display font-semibold text-[11px] uppercase tracking-widest text-foreground border border-foreground/30 px-5 py-3 rounded-full hover:bg-foreground/5 transition-colors no-underline"
@@ -76,7 +75,7 @@ onMounted(() => {
       </div>
 
       <!-- Right — Photo placeholder -->
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4 order-first md:order-last">
         <div class="w-full aspect-[3/4] bg-muted rounded-lg border border-border flex items-center justify-center">
           <span class="font-sans text-[10px] text-muted-foreground tracking-wider uppercase">
             Photo
@@ -93,11 +92,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-
-<script lang="ts">
-const skills = [
-  'Figma', 'Adobe Illustrator', 'Adobe InDesign', 'After Effects',
-  'Photoshop', 'Vue 3', 'React', 'TypeScript',
-  'HTML / CSS', 'GSAP', 'Git', 'Notion'
-]
-</script>

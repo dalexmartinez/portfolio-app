@@ -62,7 +62,7 @@ function openLightbox(index: number) {
     <template v-else>
 
       <!-- Sub-header -->
-      <div class="sticky top-[54px] z-40 flex items-center justify-between px-7 h-[46px] border-b border-border bg-background/88 backdrop-blur-sm">
+      <div class="sticky top-[54px] z-40 flex items-center justify-between px-7 h-[46px] border-b border-border bg-background backdrop-blur-sm">
         <button
           @click="goBack"
           class="flex items-center gap-2 font-sans text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors bg-transparent border-none cursor-pointer p-0"

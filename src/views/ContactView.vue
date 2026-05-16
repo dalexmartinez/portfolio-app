@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { siteConfig } from '@/config/site'
 import { ref, onMounted } from 'vue'
 import emailjs from '@emailjs/browser'
 import { useTransitions } from '@/composables/useTransitions'
@@ -78,7 +79,7 @@ async function handleSubmit() {
     </div>
 
     <!-- Body -->
-    <div class="grid grid-cols-[1fr_280px] gap-12 px-7 py-10">
+    <div class="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-12 px-7 py-10">
 
       <!-- Left — Form -->
       <div>
@@ -95,7 +96,7 @@ async function handleSubmit() {
         <form v-else @submit.prevent="handleSubmit" class="flex flex-col gap-5">
 
           <!-- Name + Email -->
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="flex flex-col gap-2">
               <label class="font-sans text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
                 Name <span class="text-foreground/40">*</span>
@@ -121,7 +122,7 @@ async function handleSubmit() {
           </div>
 
           <!-- Type + Subject -->
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="flex flex-col gap-2">
               <label class="font-sans text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
                 Type <span class="text-foreground/40">*</span>
@@ -144,7 +145,7 @@ async function handleSubmit() {
                 v-model="form.subject"
                 type="text"
                 placeholder="e.g. Product Catalog Redesign"
-                class="bg-muted border border-border rounded-md px-3 py-2 font-sans text-[12px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30 transition-colors bg-input-bg text-input-textº placeholder:text-input-placeholder"
+                class="bg-muted border border-border rounded-md px-3 py-2 font-sans text-[12px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30 transition-colors bg-input-bg text-input-text placeholder:text-input-placeholder"
               />
             </div>
           </div>
@@ -180,11 +181,11 @@ async function handleSubmit() {
       </div>
 
       <!-- Right — Info -->
-      <div class="flex flex-col gap-6 pt-2">
+      <div class="flex flex-col gap-6 pt-2 border-t border-border md:border-none mt-4 md:mt-0">
         <div>
           <div class="font-sans text-[9px] uppercase tracking-[0.12em] text-muted-foreground mb-3">Email</div>
-          <a href="mailto:your@email.com" class="font-sans text-[13px] text-foreground/70 hover:text-foreground transition-colors no-underline">
-            your@email.com
+          <a :href="`mailto:${siteConfig.email}`" class="font-sans text-[13px] text-foreground/70 hover:text-foreground transition-colors no-underline">
+            {{ siteConfig.email }}
           </a>
         </div>
         <div class="h-px bg-border"></div>
