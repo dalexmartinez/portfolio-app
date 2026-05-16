@@ -27,6 +27,9 @@
     --ring: 240 10% 3.9%;
     --radius: 0.5rem;
     --font-display: 'Syne', sans-serif;
+    --input-bg: #eeeeee;
+    --input-text: #111111;
+    --input-placeholder: #888888;
   }
 
   .dark {
@@ -49,6 +52,9 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+    --input-bg: #1d1d1d;
+    --input-text: #eeeeee;
+    --input-placeholder: #555555;
   }
 
   * {

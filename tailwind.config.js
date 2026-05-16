@@ -11,6 +11,11 @@ export default {
         sans: ['DM Sans', 'sans-serif'],
         display: ['Syne', 'sans-serif'],
       },
+      colors: {
+        'input-bg': 'var(--input-bg)',
+        'input-text': 'var(--input-text)',
+        'input-placeholder': 'var(--input-placeholder)'
+      }
     },
   },
   plugins: [],

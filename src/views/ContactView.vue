@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import emailjs from '@emailjs/browser'
 import { useTransitions } from '@/composables/useTransitions'
 
 const container = ref<HTMLElement | null>(null)
 const { zoomIn } = useTransitions()
+
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 const form = ref({
   name: '',
@@ -37,11 +42,25 @@ async function handleSubmit() {
   error.value = ''
   isSubmitting.value = true
 
-  // EmailJS integration goes here
-  // For now just simulate a successful send
-  await new Promise(r => setTimeout(r, 1000))
-  isSubmitting.value = false
-  submitted.value = true
+  try {
+    await emailjs.send(
+      SERVICE_ID,
+      TEMPLATE_ID,
+      {
+        name: form.value.name,
+        from_email: form.value.email,
+        type: form.value.type.replace(' / ', '-'),
+        subject: form.value.subject || '—',
+        message: form.value.message
+      },
+      PUBLIC_KEY
+    )
+    submitted.value = true
+  } catch (e) {
+    error.value = 'Something went wrong. Please try again or email me directly.'
+  } finally {
+    isSubmitting.value = false
+  }
 }
 </script>
 
@@ -85,7 +104,7 @@ async function handleSubmit() {
                 v-model="form.name"
                 type="text"
                 placeholder="Your name"
-                class="bg-muted border border-border rounded-md px-3 py-2 font-sans text-[12px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30 transition-colors"
+                class="bg-muted border border-border rounded-md px-3 py-2 font-sans text-[12px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30 transition-colors bg-input-bg text-input-text placeholder:text-input-placeholder"
               />
             </div>
             <div class="flex flex-col gap-2">
@@ -96,7 +115,7 @@ async function handleSubmit() {
                 v-model="form.email"
                 type="email"
                 placeholder="your@email.com"
-                class="bg-muted border border-border rounded-md px-3 py-2 font-sans text-[12px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30 transition-colors"
+                class="bg-muted border border-border rounded-md px-3 py-2 font-sans text-[12px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30 transition-colors bg-input-bg text-input-text placeholder:text-input-placeholder"
               />
             </div>
           </div>
@@ -109,7 +128,7 @@ async function handleSubmit() {
               </label>
               <select
                 v-model="form.type"
-                class="bg-muted border border-border rounded-md px-3 py-2 font-sans text-[12px] text-foreground focus:outline-none focus:border-foreground/30 transition-colors"
+                class="bg-muted border border-border rounded-md px-3 py-2 font-sans text-[12px] text-foreground focus:outline-none focus:border-foreground/30 transition-colors bg-input-bg text-input-text"
               >
                 <option value="" disabled>Select type</option>
                 <option v-for="type in contactTypes" :key="type" :value="type">
@@ -125,7 +144,7 @@ async function handleSubmit() {
                 v-model="form.subject"
                 type="text"
                 placeholder="e.g. Product Catalog Redesign"
-                class="bg-muted border border-border rounded-md px-3 py-2 font-sans text-[12px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30 transition-colors"
+                class="bg-muted border border-border rounded-md px-3 py-2 font-sans text-[12px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30 transition-colors bg-input-bg text-input-textº placeholder:text-input-placeholder"
               />
             </div>
           </div>
@@ -139,7 +158,7 @@ async function handleSubmit() {
               v-model="form.message"
               rows="6"
               placeholder="Tell me about your project..."
-              class="bg-muted border border-border rounded-md px-3 py-2 font-sans text-[12px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30 transition-colors resize-none"
+              class="bg-muted border border-border rounded-md px-3 py-2 font-sans text-[12px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30 transition-colors resize-none bg-input-bg text-input-text"
             ></textarea>
           </div>
 
