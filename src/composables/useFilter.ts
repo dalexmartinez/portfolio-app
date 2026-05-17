@@ -6,7 +6,7 @@ export function useFilter() {
   const { activeFilter } = storeToRefs(store)
 
   // Hardcoded for now — can be derived dynamically from Notion later
-  const categories = ['All', 'Digital', 'Development', 'Branding', 'UX / UI', 'Editorial']
+  const categories = ['All', 'Development', 'Digital', 'Branding', 'UX / UI', 'Design', 'Illustration', 'Editorial']
 
   function setFilter(category: string) {
     store.setFilter(category)

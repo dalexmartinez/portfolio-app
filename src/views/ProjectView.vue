@@ -78,7 +78,7 @@ function openLightbox(index: number) {
       </div>
 
       <!-- Body -->
-      <div class="grid grid-cols-[1fr_220px] gap-7 px-7 py-7">
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_220px] gap-7 px-7 py-7">
 
         <!-- Images -->
         <div class="flex flex-col gap-3">
@@ -102,20 +102,21 @@ function openLightbox(index: number) {
           </div>
 
           <!-- Thumbnails -->
-          <div class="flex gap-2" v-if="project.images.length > 1">
+          <div class="flex gap-2 overflow-x-auto scrollbar-none" v-if="project.images.length > 1">
             <div
               v-for="(img, i) in project.images"
               :key="i"
               @click="openLightbox(i)"
-              class="flex-1 h-[64px] bg-muted rounded-md border border-border cursor-pointer hover:border-foreground/20 transition-colors overflow-hidden"
+              class="shrink-0 w-[80px] h-[64px] bg-muted rounded-md border border-border cursor-pointer hover:border-foreground/20 transition-colors overflow-hidden"
             >
               <img :src="img" :alt="`Thumbnail ${i + 1}`" class="w-full h-full object-cover" />
             </div>
           </div>
+
         </div>
         
         <!-- Sidebar info -->
-        <div class="flex flex-col gap-0 pt-[52px]">
+        <div class="flex flex-col gap-0 md:pt-[52px]">
           <div>
             <div class="font-sans text-[9px] uppercase tracking-[0.12em] text-muted-foreground mb-1">Client</div>
             <div class="font-display font-medium text-[13px] text-foreground/70">{{ project.client }}</div>

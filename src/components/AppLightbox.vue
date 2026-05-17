@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { useTransitions } from '@/composables/useTransitions'
 
 const props = defineProps<{
@@ -18,8 +18,10 @@ const container = ref<HTMLElement | null>(null)
 
 // Animate in when opened
 watch(() => props.modelValue, async (val) => {
-  if (val && container.value) {
-    lightboxIn(container.value)
+  if (val) {
+    await nextTick()
+    container.value?.focus()
+    if (container.value) lightboxIn(container.value)
   }
 })
 
@@ -53,6 +55,8 @@ function next() {
       ref="container"
       class="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center gap-4"
       @keydown.esc="close"
+      @keydown.left="prev"
+      @keydown.right="next"
       tabindex="0"
     >
       <!-- Close button -->
