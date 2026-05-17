@@ -192,15 +192,15 @@ async function handleSubmit() {
         <div>
           <div class="font-sans text-[9px] uppercase tracking-[0.12em] text-muted-foreground mb-3">Links</div>
           <div class="flex flex-col gap-2">
-            <a href="https://behance.net/kheiron" target="_blank" rel="noopener noreferrer"
+            <a :href="siteConfig.behance" target="_blank" rel="noopener noreferrer"
               class="font-sans text-[12px] text-foreground/70 hover:text-foreground transition-colors no-underline">
               Behance ↗
             </a>
-            <a href="https://github.com/dalexmartinez" target="_blank" rel="noopener noreferrer"
+            <a :href="siteConfig.github" target="_blank" rel="noopener noreferrer"
               class="font-sans text-[12px] text-foreground/70 hover:text-foreground transition-colors no-underline">
               GitHub ↗
             </a>
-            <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer"
+            <a :href="siteConfig.linkedin" target="_blank" rel="noopener noreferrer"
               class="font-sans text-[12px] text-foreground/70 hover:text-foreground transition-colors no-underline">
               LinkedIn ↗
             </a>
@@ -209,7 +209,7 @@ async function handleSubmit() {
         <div class="h-px bg-border"></div>
         <div>
           <div class="font-sans text-[9px] uppercase tracking-[0.12em] text-muted-foreground mb-2">Location</div>
-          <div class="font-sans text-[12px] text-foreground/70">Mexico City, MX</div>
+          <div class="font-sans text-[12px] text-foreground/70">{{siteConfig.location}}</div>
         </div>
       </div>
 

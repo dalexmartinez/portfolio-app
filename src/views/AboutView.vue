@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { siteConfig } from '@/config/site'
+import { aboutContent } from '@/config/about'
 import { ref, onMounted } from 'vue'
 import { useTransitions } from '@/composables/useTransitions'
 
@@ -26,7 +27,7 @@ onMounted(() => {
         About
       </div>
       <h1 class="font-display font-semibold text-[30px] uppercase tracking-tight leading-none text-foreground">
-        Dalex Martínez
+        {{ siteConfig.name }}
       </h1>
     </div>
 
@@ -38,11 +39,12 @@ onMounted(() => {
 
         <!-- Bio text -->
         <div class="flex flex-col gap-5">
-          <p class="font-sans font-light text-[14px] text-foreground/70 leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          </p>
-          <p class="font-sans font-light text-[14px] text-foreground/70 leading-relaxed">
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+          <p
+            v-for="(paragraph, i) in aboutContent.en.bio"
+            :key="i"
+            class="font-sans font-light text-[14px] text-foreground/70 leading-relaxed"
+          >
+            {{ paragraph }}
           </p>
         </div>
 
@@ -76,15 +78,15 @@ onMounted(() => {
 
       <!-- Right — Photo placeholder -->
       <div class="flex flex-col gap-4 order-first md:order-last">
-        <div class="w-full aspect-[3/4] bg-muted rounded-lg border border-border flex items-center justify-center">
+        <div class="w-full aspect-square bg-muted rounded-lg border border-border flex items-center justify-center">
           <span class="font-sans text-[10px] text-muted-foreground tracking-wider uppercase">
             Photo
           </span>
         </div>
         <div class="flex flex-col gap-1">
-          <div class="font-display font-semibold text-[13px] text-foreground">Dalex Martínez</div>
+          <div class="font-display font-semibold text-[13px] text-foreground">{{ siteConfig.name }}</div>
           <div class="font-sans text-[10px] uppercase tracking-wider text-muted-foreground">
-            Designer & Developer — CDMX
+            {{ siteConfig.profession }}<br>{{ siteConfig.location }}
           </div>
         </div>
       </div>
