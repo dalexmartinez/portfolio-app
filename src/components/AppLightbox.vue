@@ -4,7 +4,7 @@ import { useTransitions } from '@/composables/useTransitions'
 
 const props = defineProps<{
   images: string[]
-  modelValue: boolean // controls open/close
+  modelValue: boolean
 }>()
 
 const emit = defineEmits<{
@@ -16,7 +16,6 @@ const { lightboxIn, lightboxOut } = useTransitions()
 const currentIndex = ref(0)
 const container = ref<HTMLElement | null>(null)
 
-// Animate in when opened
 watch(() => props.modelValue, async (val) => {
   if (val) {
     await nextTick()
@@ -24,6 +23,18 @@ watch(() => props.modelValue, async (val) => {
     if (container.value) lightboxIn(container.value)
   }
 })
+
+const touchStartX = ref(0)
+
+function onTouchStart(e: TouchEvent) {
+  touchStartX.value = e.touches[0].clientX
+}
+
+function onTouchEnd(e: TouchEvent) {
+  const delta = touchStartX.value - e.changedTouches[0].clientX
+  if (delta > 50) next()
+  if (delta < -50) prev()
+}
 
 function close() {
   if (container.value) {
@@ -57,23 +68,25 @@ function next() {
       @keydown.esc="close"
       @keydown.left="prev"
       @keydown.right="next"
+      @touchstart="onTouchStart"
+      @touchend="onTouchEnd"
       tabindex="0"
     >
       <!-- Close button -->
       <button
         @click="close"
-        class="absolute top-4 right-5 bg-transparent border-none text-white/40 hover:text-white/80 text-xl cursor-pointer transition-colors"
+        class="absolute top-4 right-5 bg-transparent border-none text-white/40 hover:text-white/80 text-xl cursor-pointer transition-colors z-10"
       >✕</button>
 
       <!-- Prev arrow -->
       <button
         v-if="images.length > 1"
         @click="prev"
-        class="absolute left-[8%] top-1/2 -translate-y-1/2 bg-transparent border border-white/12 text-white/40 hover:text-white/80 hover:border-white/30 rounded-full w-9 h-9 flex items-center justify-center cursor-pointer transition-all"
+        class="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 bg-transparent border border-white/20 text-white/40 hover:text-white/80 hover:border-white/40 rounded-full w-9 h-9 items-center justify-center cursor-pointer transition-all"
       >←</button>
 
-      <!-- Main image -->
-      <div class="w-[78%] h-[75vh] bg-zinc-900 rounded-lg border border-white/10 flex items-center justify-center overflow-hidden">
+      <!-- Main image — fullscreen mobile, generous desktop -->
+      <div class="w-full h-full md:w-[90%] md:h-[88vh] flex items-center justify-center overflow-hidden">
         <img
           v-if="images[currentIndex]"
           :src="images[currentIndex]"
@@ -89,11 +102,11 @@ function next() {
       <button
         v-if="images.length > 1"
         @click="next"
-        class="absolute right-[8%] top-1/2 -translate-y-1/2 bg-transparent border border-white/12 text-white/40 hover:text-white/80 hover:border-white/30 rounded-full w-9 h-9 flex items-center justify-center cursor-pointer transition-all"
+        class="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 bg-transparent border border-white/20 text-white/40 hover:text-white/80 hover:border-white/40 rounded-full w-9 h-9 items-center justify-center cursor-pointer transition-all"
       >→</button>
 
       <!-- Dots -->
-      <div v-if="images.length > 1" class="flex gap-2">
+      <div v-if="images.length > 1" class="absolute bottom-6 flex gap-2">
         <button
           v-for="(_, i) in images"
           :key="i"
