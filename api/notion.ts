@@ -47,6 +47,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(200).json(page)
     }
 
+    // Fetch site settings
+    if (action === 'settings') {
+      const response = await notion.databases.query({
+        database_id: process.env.VITE_NOTION_SITE_SETTINGS_ID!
+      })
+
+      return res.status(200).json(response.results[0])
+    }
+
     return res.status(400).json({ error: 'Invalid action' })
 
   } catch (error: any) {

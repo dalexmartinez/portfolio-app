@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { siteConfig } from '@/config/site'
-import { aboutContent } from '@/config/about'
 import { ref, onMounted } from 'vue'
 import { useTransitions } from '@/composables/useTransitions'
+import { useSiteSettingsStore } from '@/stores/siteSettings'
 
 const container = ref<HTMLElement | null>(null)
 const { zoomIn } = useTransitions()
+const siteSettings = useSiteSettingsStore()
 
 const skills = [
   'Figma', 'Adobe Illustrator', 'Adobe InDesign', 'After Effects',
@@ -13,7 +14,8 @@ const skills = [
   'HTML / CSS', 'GSAP', 'Git', 'Notion'
 ]
 
-onMounted(() => {
+onMounted(async () => {
+  await siteSettings.load()
   if (container.value) zoomIn(container.value, () => {})
 })
 </script>
@@ -40,7 +42,7 @@ onMounted(() => {
         <!-- Bio text -->
         <div class="flex flex-col gap-5">
           <p
-            v-for="(paragraph, i) in aboutContent.en.bio"
+            v-for="(paragraph, i) in siteSettings.bioEN.split('\n').filter(Boolean)"
             :key="i"
             class="font-sans font-light text-[14px] text-foreground/70 leading-relaxed"
           >
@@ -78,17 +80,26 @@ onMounted(() => {
 
       <!-- Right — Photo placeholder -->
       <div class="flex flex-col gap-4 order-first md:order-last">
-        <div class="w-full aspect-square bg-muted rounded-lg border border-border flex items-center justify-center">
-          <span class="font-sans text-[10px] text-muted-foreground tracking-wider uppercase">
+
+        <div class="w-full aspect-square bg-muted rounded-lg border border-border overflow-hidden flex items-center justify-center">
+          <img
+            v-if="siteSettings.avatar"
+            :src="siteSettings.avatar"
+            :alt="siteConfig.name"
+            class="w-full h-full object-cover"
+          />
+          <span v-else class="font-sans text-[10px] text-muted-foreground tracking-wider uppercase">
             Photo
           </span>
         </div>
+
         <div class="flex flex-col gap-1">
           <div class="font-display font-semibold text-[13px] text-foreground">{{ siteConfig.name }}</div>
           <div class="font-sans text-[10px] uppercase tracking-wider text-muted-foreground">
             {{ siteConfig.profession }}<br>{{ siteConfig.location }}
           </div>
         </div>
+        
       </div>
 
     </div>

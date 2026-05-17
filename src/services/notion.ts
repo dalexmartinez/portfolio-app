@@ -81,3 +81,28 @@ function transformDetailPage(page: any): ProjectDetail {
     tags: page.properties.Tags?.multi_select?.map((t: any) => t.name) ?? []
   }
 }
+
+export async function fetchSiteSettings() {
+  if (!isDev) {
+    const res = await fetch('/api/notion?action=settings')
+    const page = await res.json()
+    return transformSettings(page)
+  }
+
+  const response = await notion.databases.query({
+    database_id: import.meta.env.VITE_NOTION_SITE_SETTINGS_ID
+  })
+
+  const page = response.results[0] as any
+  return transformSettings(page)
+}
+
+function transformSettings(page: any) {
+  return {
+    avatar: page.properties.Avatar?.files[0]?.file?.url
+          ?? page.properties.Avatar?.files[0]?.external?.url
+          ?? '',
+    bioEN: page.properties.Bio_EN?.rich_text[0]?.plain_text ?? '',
+    bioES: page.properties.Bio_ES?.rich_text[0]?.plain_text ?? ''
+  }
+}
