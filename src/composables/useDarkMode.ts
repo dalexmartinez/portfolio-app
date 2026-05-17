@@ -1,10 +1,7 @@
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 
-const isDark = ref(
-  localStorage.getItem('darkMode') === 'true' ?? true
-)
+const isDark = ref(localStorage.getItem('darkMode') === 'true')
 
-// Apply class immediately on load
 document.documentElement.classList.toggle('dark', isDark.value)
 
 export function useDarkMode() {
